@@ -4,4 +4,5 @@ export default [
     index("routes/home.tsx"),
     { path: "register", file: "routes/register.tsx" },
     {path: "login", file: "routes/login.tsx"},
+    {path: "dashboard", file: "routes/dashboard.tsx"},
 ] satisfies RouteConfig;

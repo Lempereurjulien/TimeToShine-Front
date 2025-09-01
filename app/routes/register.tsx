@@ -2,10 +2,12 @@ import { useState } from "react";
 import Message from "~/components/message";
 import { useNavigate } from "react-router";
 import { ArrowCircleLeft } from "heroicons-react";
+import { Eye, EyeOff } from "heroicons-react";
 
 export default function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
   const [visiblePassword, setVisiblePassword] = useState(false);
   const [openMessage, setOpenMessage] = useState(false);
   const [message, setMessage] = useState("");
@@ -19,7 +21,7 @@ const register = async () => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ email, password, username }),
     });
 
     const data = await res.json();
@@ -32,64 +34,109 @@ const register = async () => {
 
     setEmail("");
     setPassword("");
+    setUsername("");
     setMessage(data.message);
     setOpenMessage(true);
+    setTimeout(() => {
+            setOpenMessage(false);
+            navigate("/login");
+          }, 1000);
   } catch (error) {
-    console.log('error', error);
+    console.error(error);
     setMessage("Erreur lors de l'inscription. Veuillez réessayer.");
     setOpenMessage(true);
+    setTimeout(() => {
+            setOpenMessage(false);
+          }, 1000);
   }
 }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0a1428] via-[#1e253e] to-[#2c2f4a]">
-      <ArrowCircleLeft className="absolute top-6 left-6 text-yellow-400 hover:text-yellow-300 cursor-pointer" size={40} onClick={() => navigate("/")} />
-      <div className="bg-[#1e253e] p-8 rounded-lg shadow-2xl w-full max-w-md border border-yellow-600">
-        <h1 className="text-3xl font-extrabold text-yellow-400 mb-6 text-center drop-shadow-lg">Créer un compte</h1>
-        <div className="space-y-5"></div>
-        <div>
-          <label htmlFor="email" className="block text-yellow-300 mb-1 font-semibold">
-            Email
-          </label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            className="w-full px-3 py-2 border border-yellow-700 rounded bg-[#232946] text-white focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition"
-            required
-            onChange={(e) => setEmail(e.target.value)}
-            value={email}
-          // @ts-ignore
-          />
+<div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-[#0a1428] to-[#1e283e]">
+      <div className="w-full max-w-md rounded-lg shadow-lg bg-[#091428] p-8 border-2 border-[#785a28]">
+        <h2 className="text-3xl font-bold text-center text-[#f0e6d2] mb-8 font-serif tracking-wide">
+          Inscription
+        </h2>
+        <div className="space-y-6">
+          <div>
+            <label className="block text-[#f0e6d2] mb-2 font-medium" htmlFor="email">
+              Adresse e-mail
+            </label>
+            <input
+              id="email"
+              type="email"
+              className="w-full px-4 py-2 rounded bg-[#1e2328] border border-[#785a28] text-[#f0e6d2] focus:outline-none focus:ring-2 focus:ring-[#c89b3c]"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+              autoComplete="email"
+            />
+          </div>
+          <div>
+            <label className="block text-[#f0e6d2] mb-2 font-medium" htmlFor="email">
+              Nom d'utilisateur
+            </label>
+            <input
+              id="username"
+              type="text"
+              className="w-full px-4 py-2 rounded bg-[#1e2328] border border-[#785a28] text-[#f0e6d2] focus:outline-none focus:ring-2 focus:ring-[#c89b3c]"
+              value={username}
+              onChange={e => setUsername(e.target.value)}
+              autoComplete="text"
+            />
+          </div>
+          <div>
+            <label className="block text-[#f0e6d2] mb-2 font-medium" htmlFor="password">
+              Mot de passe
+            </label>
+            <div className="relative">
+              <input
+                id="password"
+                type={visiblePassword ? "text" : "password"}
+                className="w-full px-4 py-2 rounded bg-[#1e2328] border border-[#785a28] text-[#f0e6d2] focus:outline-none focus:ring-2 focus:ring-[#c89b3c]"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                autoComplete="current-password"
+              />
+              <button
+                type="button"
+                className="absolute inset-y-0 right-3 flex items-center text-[#c89b3c] hover:text-[#f0e6d2]"
+                onClick={() => setVisiblePassword(v => !v)}
+                tabIndex={-1}
+              >
+                {visiblePassword ? (
+                  <Eye className="h-5 w-5" onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} />
+                ) : (
+                  <EyeOff className="h-5 w-5" onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} />
+                  
+                )}
+              </button>
+            </div>
+          </div>
+          <button
+            type="submit"
+            className="w-full py-2 mt-4 rounded bg-gradient-to-r from-[#c89b3c] to-[#785a28] text-[#0a1428] font-bold text-lg shadow hover:from-[#f0e6d2] hover:to-[#c89b3c] transition"
+            onClick={() => register()}
+          >
+            S'inscrire
+          </button>
         </div>
-        <div>
-          <label htmlFor="password" className="block text-yellow-300 mb-1 font-semibold">
-            Mot de passe
-          </label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            className="w-full px-3 py-2 border border-yellow-700 rounded bg-[#232946] text-white focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition"
-            required
-            onChange={(e) => setPassword(e.target.value)}
-            value={password}
-          />
+        <div className="mt-6 text-center">
+          <span className="text-[#f0e6d2]">Pas encore de compte ? </span>
+          <button
+            className="text-[#c89b3c] hover:underline font-semibold"
+            type="button"
+            onClick={() => navigate("/login")}
+          >
+            Déja un compte ?
+          </button>
         </div>
-        <button
-          onClick={() => register()}
-          className="w-full bg-gradient-to-r from-yellow-500 via-yellow-400 to-yellow-600 text-[#232946] font-bold py-2 rounded shadow hover:from-yellow-400 hover:to-yellow-500 transition"
-
-        >
-          S'inscrire
-        </button>
-      </div>
-      <Message
-        open={openMessage}
-        onClose={() => { setOpenMessage(false) }}
-        title="Inscription"
-        message={message}
-      />
+        {openMessage && (
+          <div className="mt-4 p-3 rounded bg-[#c89b3c] text-[#0a1428] text-center font-semibold">
+            {message}
+          </div>
+        )}
+    </div>
+    <Message open={openMessage} onClose={() => setOpenMessage(false)} title="Notification" message={message} />
     </div>
   );
 }
