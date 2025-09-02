@@ -25,6 +25,7 @@ export default function Dashboard() {
                 console.error("Error fetching videos:", error);
             });
     }, []);
+    
     return (
         <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-[#0a1428] to-[#1e283e]">
             <Navbar />
