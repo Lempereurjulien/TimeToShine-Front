@@ -1,8 +1,9 @@
 import { UserCircle } from "heroicons-react";
 import Navbar from "~/components/navbar";
+import AddVideos from "~/components/addVideos";
 export default function Profil() {
     return (
-        <div className="min-h-screen flex flex-col bg-gradient-to-br from-[#0a1428] to-[#1e283e]">
+        <div className="flex flex-col bg-gradient-to-br from-[#0a1428] to-[#1e283e]">
             <Navbar />
             {/* Profil */}
             <main className="p-8 mt-24">
@@ -34,9 +35,7 @@ export default function Profil() {
                     </button>
                 </div>
                 {/* profil partie*/}
-                <div>
-                    Salut
-                </div>
+                    <AddVideos />
             </main>
         </div>
     );

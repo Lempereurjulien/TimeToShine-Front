@@ -2,9 +2,11 @@ import { UserCircle, Heart } from "heroicons-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import Navbar from "~/components/navbar";
+import AddVideos from "~/components/addVideos";
 export default function Dashboard() {
     const [username, setUsername] = useState("");
     const [videos, setVideos] = useState<any>([]);
+    const [visibleButton, setVisibleButton] = useState(false);
     const navigation = useNavigate();
     useEffect(() => {
         const storedUser = localStorage.getItem("user");
@@ -35,7 +37,10 @@ export default function Dashboard() {
                     />
                 </div>
                 <h1 className="text-3xl font-semibold mb-6 text-yellow-800">Top vidéos</h1>
-                    <button className="m-2 px-2 py-2 bg-[#785a28] text-white font-semibold rounded-md hover:bg-[#a67c2e] transition">Add vidéo +</button>
+                    <button className="m-6 px-2 py-2 bg-[#785a28] text-white font-semibold rounded-md hover:bg-[#a67c2e] transition" onClick={() =>{setVisibleButton(!visibleButton)}}>Add vidéo +</button>
+                    {visibleButton && (
+                <AddVideos />
+                    )}
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                     {/* Exemple de vidéo */}
                     {videos.map((video) => (
@@ -49,7 +54,7 @@ export default function Dashboard() {
                                 />
                             </div>
                             <h2 className="text-lg font-medium mb-1">{video.title}</h2>
-                            <a className="text-gray-500 text-sm hover:underline hover:font-bold">gagil83</a>
+                            <a className="text-gray-500 text-sm hover:underline hover:font-bold">{video.username}</a>
                             <p>{video.champion}</p>
                             <div className="flex items-center mt-2 space-x-4">
                                 <Heart className={`h-5 w-5 inline-block mr-1 ${video.like > 0 ? "text-red-500" : "text-black"}`} onClick={() =>{video.like += 1}}/>
