@@ -33,6 +33,7 @@ export default function Login() {
           
           setMessage(data.message);
           setOpenMessage(true);
+          localStorage.setItem("user", JSON.stringify(data.user));
           setTimeout(() => {
             setOpenMessage(false);
             navigate("/dashboard");

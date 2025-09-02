@@ -5,4 +5,5 @@ export default [
     { path: "register", file: "routes/register.tsx" },
     {path: "login", file: "routes/login.tsx"},
     {path: "dashboard", file: "routes/dashboard.tsx"},
+    {path: "profil", file: "routes/profil.tsx"},
 ] satisfies RouteConfig;
