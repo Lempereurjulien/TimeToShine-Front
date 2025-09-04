@@ -1,7 +1,27 @@
 import { UserCircle } from "heroicons-react";
+import { useState } from "react";
 import Navbar from "~/components/navbar";
 import AddVideos from "~/components/addVideos";
+import { useEffect } from "react";
+import VideosDisplay from "~/components/videosDisplay";
 export default function Profil() {
+    const [videosUser, setVideosUser] = useState<any>([]);
+    useEffect(() => {
+        const storedUser = localStorage.getItem("user");
+        if (storedUser) {      
+            console.log(JSON.parse(storedUser));
+            const userId = JSON.parse(storedUser).id;            
+            fetch(`http://localhost:5000/videos/user/${userId}`)
+                .then((response) => response.json())
+                .then((data) => {
+                    setVideosUser(data);
+                })
+                .catch((error) => {
+                    console.error("Error fetching user's videos:", error);
+                });
+                  
+        }
+    }, []);
     return (
         <div className="flex flex-col bg-gradient-to-br from-[#0a1428] to-[#1e283e]">
             <Navbar />
@@ -36,6 +56,10 @@ export default function Profil() {
                 </div>
                 {/* profil partie*/}
                     <AddVideos />
+                    <div>
+                        <h1 className="text-3xl font-semibold mb-6 text-yellow-800">Mes vidéos</h1>
+                    <VideosDisplay videos={videosUser}/>
+                    </div>
             </main>
         </div>
     );

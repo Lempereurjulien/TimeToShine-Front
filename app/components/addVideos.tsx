@@ -1,7 +1,11 @@
 import React from "react";
+import {champions} from "../asset/champion";
 
 export default function AddVideos() {
-
+    const [championsData, setChampionsData] = React.useState<string[]>([]);
+    React.useEffect(() => {
+        // Simulate fetching data from an API or local asset        
+    }, []);
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
@@ -39,12 +43,10 @@ export default function AddVideos() {
     };
 
     return (
-        <div className="flex flex-col items-center justify-center m-8">
-            <main className="p-8 ">
-                <div className="flex-grow flex">
-                </div>
+        <div className="flex flex-col m-8">
+            <main className="p-8 w-full">
                 <h1 className="text-3xl font-semibold mb-6 text-yellow-800">Ajouter une vidéo</h1>
-                <form className="bg-white p-6 rounded-lg shadow-md w-full max-w-lg" onSubmit={handleSubmit}>
+                <form className="bg-white p-6 rounded-lg shadow-md w-full" onSubmit={handleSubmit}>
                     <div className="mb-4">
                         <label className="block text-gray-700 font-semibold mb-2" htmlFor="title">
                             Titre de la vidéo
@@ -61,13 +63,19 @@ export default function AddVideos() {
                         <label className="block text-gray-700 font-semibold mb-2" htmlFor="champion">
                             Champion
                         </label>
-                        <input
+                        <select
                             name="champion"
-                            type="text"
                             id="champion"
                             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#d8a54d]"
-                            placeholder="Entrez le nom du champion"
-                        />
+                        >
+                            <option value="">Sélectionnez un champion</option>
+                            {champions.map((champ) => (
+                                <option key={champ} value={champ}>
+                                    {champ}
+                                    </option>
+                            ))}
+                        </select>
+
                     </div>
                     <div className="mb-4">
                         <label className="block text-gray-700 font-semibold mb-2" htmlFor="video">

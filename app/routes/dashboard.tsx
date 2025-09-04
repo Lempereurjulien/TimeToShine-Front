@@ -1,13 +1,14 @@
-import { UserCircle, Heart } from "heroicons-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import Navbar from "~/components/navbar";
 import AddVideos from "~/components/addVideos";
+import VideosDisplay from "~/components/videosDisplay";
 export default function Dashboard() {
     const [username, setUsername] = useState("");
     const [videos, setVideos] = useState<any>([]);
     const [visibleButton, setVisibleButton] = useState(false);
     const navigation = useNavigate();
+
     useEffect(() => {
         const storedUser = localStorage.getItem("user");
         if (storedUser) {      
@@ -15,17 +16,42 @@ export default function Dashboard() {
                   
             setUsername(JSON.parse(storedUser).username);
         }
-        fetch("http://localhost:5000/videos")
+        fetch("http://localhost:5000/videos/top")
             .then((response) => response.json())
             .then((data) => {
                 setVideos(data);
-                console.log(data);
             })
             .catch((error) => {
                 console.error("Error fetching videos:", error);
             });
     }, []);
     
+
+    const likeVideo = async (videoId: number) => {
+        console.log("Like video with ID:", videoId);
+        
+        const storedUser = localStorage.getItem('user');
+        if (!storedUser) {
+            console.error('Utilisateur non connecté');
+            return;
+        }
+        const userId = JSON.parse(storedUser).id;
+
+
+        try {
+            const response = await fetch(`http://localhost:5000/videos/${videoId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    // 'Authorization': 'Bearer ' + localStorage.getItem('token') // Si vous utilisez une authentification par token
+                },
+                body: JSON.stringify({ user_id: userId })
+            });
+        } catch (error) {
+            console.error('Erreur réseau', error);
+        }
+    }
+
     return (
         <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-[#0a1428] to-[#1e283e]">
             <Navbar />
@@ -42,28 +68,7 @@ export default function Dashboard() {
                     {visibleButton && (
                 <AddVideos />
                     )}
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                    {/* Exemple de vidéo */}
-                    {videos.map((video) => (
-                        <div key={video.id} className="bg-white rounded-lg shadow hover:shadow-lg transition p-4">
-                            <div className="aspect-w-16 aspect-h-9 mb-3">
-                                <video
-                                    src={video.path_url} // Remplacez par video.path_url quand le backend sera prêt
-                                    alt={`Vidéo ${video.title}`}
-                                    className="rounded-md object-cover w-full h-full"
-                                    controls
-                                />
-                            </div>
-                            <h2 className="text-lg font-medium mb-1">{video.title}</h2>
-                            <a className="text-gray-500 text-sm hover:underline hover:font-bold">{video.username}</a>
-                            <p>{video.champion}</p>
-                            <div className="flex items-center mt-2 space-x-4">
-                                <Heart className={`h-5 w-5 inline-block mr-1 ${video.like > 0 ? "text-red-500" : "text-black"}`} onClick={() =>{video.like += 1}}/>
-                                <p>{video.like}</p>
-                                </div>
-                        </div>
-                    ))}
-                </div>
+                <VideosDisplay videos={videos}/>
             </main>
         </div>
     )

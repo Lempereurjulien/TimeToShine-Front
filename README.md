@@ -85,3 +85,20 @@ This template comes with [Tailwind CSS](https://tailwindcss.com/) already config
 ---
 
 Built with ❤️ using React Router.
+
+
+//TimeToShine
+
+TimeToShine is a community-driven social platform designed to celebrate and share players’ proudest in-game moments from Summoner’s Rift. The platform allows users to upload their recordings of impactful plays (“best moves”), showcase their skills, and engage with the community by liking and discovering other players’ highlights.
+
+Key features include:
+
+Uploading and sharing personal gameplay highlights.
+
+Browsing and searching videos by champion or summoner name.
+
+Community interaction through viewing and liking shared content.
+
+Looking ahead, TimeToShine aims to integrate machine learning to automatically classify videos by champion, simplifying the upload process and improving user experience by removing the need for manual tagging.
+
+The goal of this project is to enrich the League of Legends community experience by creating a positive, inspiring space where players can share, celebrate, and connect over their gameplay achievements.
