@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import AllChampions from "./allChampions";
 import { champions } from "../asset/champion";
 import Message from "./message";
+const API_URL = import.meta.env.VITE_API_URL;
 
 export default function AddVideos() {
     const [open, setOpen] = useState(false);
@@ -24,7 +25,7 @@ export default function AddVideos() {
             return;
         }
         try {
-            const response = await fetch('http://localhost:5000/videos', {
+            const response = await fetch(`${API_URL}/videos`, {
                 method: 'POST',
                 body: formData,
                 // headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }

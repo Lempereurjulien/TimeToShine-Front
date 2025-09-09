@@ -3,6 +3,7 @@ import { useNavigate } from "react-router";
 import Navbar from "~/components/navbar";
 import AddVideos from "~/components/addVideos";
 import VideosDisplay from "~/components/videosDisplay";
+const API_URL = import.meta.env.VITE_API_URL;
 export default function Dashboard() {
     const [username, setUsername] = useState("");
     const [videos, setVideos] = useState<any>([]);
@@ -18,7 +19,7 @@ export default function Dashboard() {
 
             setUsername(JSON.parse(storedUser).username);
         }
-        fetch("http://localhost:5000/videos/top")
+        fetch(`${API_URL}/videos/top`)
             .then((response) => response.json())
             .then((data) => {
                 setVideos(data);
@@ -30,7 +31,7 @@ export default function Dashboard() {
 
     const search = (element) => {
         setUsername(element);
-        fetch(`http://localhost:5000/videos/search/${element}`)
+        fetch(`${API_URL}/videos/search/${element}`)
             .then((response) => response.json())
             .then((data) => {
                 setVideos(data);

@@ -8,11 +8,12 @@ export default function Login() {
   const [visiblePassword, setVisiblePassword] = useState(false);
   const [openMessage, setOpenMessage] = useState(false);
   const [message, setMessage] = useState("");
+  const API_URL = import.meta.env.VITE_API_URL;
 
   let navigate = useNavigate();
 
   const login = () =>{
-    fetch("http://127.0.0.1:5000/login", {
+    fetch(`${API_URL}/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

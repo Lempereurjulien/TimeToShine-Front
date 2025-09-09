@@ -3,6 +3,7 @@ import Message from "~/components/message";
 import { useNavigate } from "react-router";
 import { ArrowCircleLeft } from "heroicons-react";
 import { Eye, EyeOff } from "heroicons-react";
+const API_URL = import.meta.env.VITE_API_URL;
 
 export default function Register() {
   const [email, setEmail] = useState("");
@@ -16,7 +17,7 @@ export default function Register() {
 
 const register = async () => {
   try {
-    const res = await fetch("http://127.0.0.1:5000/register", {
+    const res = await fetch(`${API_URL}/register`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

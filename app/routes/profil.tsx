@@ -4,6 +4,8 @@ import Navbar from "~/components/navbar";
 import AddVideos from "~/components/addVideos";
 import { useEffect } from "react";
 import VideosDisplay from "~/components/videosDisplay";
+const API_URL = import.meta.env.VITE_API_URL;
+
 export default function Profil() {
     const navigate = useNavigate();
     const [videosUser, setVideosUser] = useState<any>([]);
@@ -13,7 +15,7 @@ export default function Profil() {
         if (storedUser) {
             setUser(JSON.parse(storedUser));
             const userId = JSON.parse(storedUser).id;
-            fetch(`http://localhost:5000/videos/user/${userId}`)
+            fetch(`${API_URL}/videos/user/${userId}`)
                 .then((response) => response.json())
                 .then((data) => {
                     setVideosUser(data);
