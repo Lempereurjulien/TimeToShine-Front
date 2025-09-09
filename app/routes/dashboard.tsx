@@ -7,13 +7,15 @@ export default function Dashboard() {
     const [username, setUsername] = useState("");
     const [videos, setVideos] = useState<any>([]);
     const [visibleButton, setVisibleButton] = useState(false);
+    const [titleKey, setTitleKey] = useState(0);
     const navigation = useNavigate();
+
 
     useEffect(() => {
         const storedUser = localStorage.getItem("user");
-        if (storedUser) {      
+        if (storedUser) {
             console.log(JSON.parse(storedUser));
-                  
+
             setUsername(JSON.parse(storedUser).username);
         }
         fetch("http://localhost:5000/videos/top")
@@ -24,51 +26,43 @@ export default function Dashboard() {
             .catch((error) => {
                 console.error("Error fetching videos:", error);
             });
-    }, []);
-    
+    }, [titleKey==0]);
 
-    const likeVideo = async (videoId: number) => {
-        console.log("Like video with ID:", videoId);
-        
-        const storedUser = localStorage.getItem('user');
-        if (!storedUser) {
-            console.error('Utilisateur non connecté');
-            return;
-        }
-        const userId = JSON.parse(storedUser).id;
-
-
-        try {
-            const response = await fetch(`http://localhost:5000/videos/${videoId}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    // 'Authorization': 'Bearer ' + localStorage.getItem('token') // Si vous utilisez une authentification par token
-                },
-                body: JSON.stringify({ user_id: userId })
+    const search = (element) => {
+        setUsername(element);
+        fetch(`http://localhost:5000/videos/search/${element}`)
+            .then((response) => response.json())
+            .then((data) => {
+                setVideos(data);
+            })
+            .catch((error) => {
+                console.error("Error fetching videos:", error);
             });
-        } catch (error) {
-            console.error('Erreur réseau', error);
-        }
     }
 
     return (
         <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-[#0a1428] to-[#1e283e]">
             <Navbar />
             <main className="p-8 mt-24">
+                <div className="flex items-center gap-3 mt-16">
+                    <h1 className={`text-3xl font-semibold mb-6 ${titleKey == 0 ? "text-yellow-600 underline" : "text-yellow-800"}`} onClick={() => setTitleKey(0)}>Top vidéos</h1>
+                    <h1 className={`text-3xl font-semibold mb-6 ${titleKey == 1 ? "text-yellow-600 underline" : "text-yellow-800"}`} onClick={() => setTitleKey(1)}>Recherche Vidéos</h1>
+                </div>
+                {titleKey == 1 && (
                 <div className="flex-grow flex mx-4 m-10">
                     <input
+                            onChange={(e) => search(e.target.value)}
                         type="text"
-                        placeholder="Rechercher une vidéo..."
+                        placeholder="Rechercher un utilisateur/champion..."
                         className=" bg-[#d8a54d] w-[100%] px-4 py-2 border border-black/70 rounded-md focus:outline-none focus:border-[#d8a54d]"
                     />
                 </div>
-                <h1 className="text-3xl font-semibold mb-6 text-yellow-800">Top vidéos</h1>
-                    <button className="m-6 px-2 py-2 bg-[#785a28] text-white font-semibold rounded-md hover:bg-[#a67c2e] transition" onClick={() =>{setVisibleButton(!visibleButton)}}>Add vidéo +</button>
-                    {visibleButton && (
-                <AddVideos />
-                    )}
-                <VideosDisplay videos={videos}/>
+                )}
+                <button className="m-6 px-2 py-2 bg-[#785a28] text-white font-semibold rounded-md hover:bg-[#a67c2e] transition" onClick={() => { setVisibleButton(!visibleButton) }}>Add vidéo +</button>
+                {visibleButton && (
+                    <AddVideos />
+                )}
+                <VideosDisplay videos={videos} />
             </main>
         </div>
     )
