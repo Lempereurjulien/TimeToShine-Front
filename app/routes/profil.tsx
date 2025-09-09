@@ -1,10 +1,11 @@
-import { UserCircle } from "heroicons-react";
+import { useNavigate } from "react-router";
 import { useState } from "react";
 import Navbar from "~/components/navbar";
 import AddVideos from "~/components/addVideos";
 import { useEffect } from "react";
 import VideosDisplay from "~/components/videosDisplay";
 export default function Profil() {
+    const navigate = useNavigate();
     const [videosUser, setVideosUser] = useState<any>([]);
     useEffect(() => {
         const storedUser = localStorage.getItem("user");
@@ -22,6 +23,12 @@ export default function Profil() {
                   
         }
     }, []);
+
+    const logout = () => {
+        localStorage.removeItem("user");
+        navigate("/login");
+    }
+
     return (
         <div className="flex flex-col bg-gradient-to-br from-[#0a1428] to-[#1e283e]">
             <Navbar />
@@ -61,6 +68,11 @@ export default function Profil() {
                     <VideosDisplay videos={videosUser}/>
                     </div>
             </main>
+            <div className="flex m-4 justify-end" >
+            <button className="bottom-4 right-4 p-4 rounded-full bg-gradient-to-r from-[#c89b3c] to-[#785a28] text-white shadow-lg hover:from-[#f0e6d2] hover:to-[#c89b3c] transition" onClick={() => logout()}>
+                logout
+            </button>
+            </div>
         </div>
     );
 }

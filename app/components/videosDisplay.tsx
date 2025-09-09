@@ -20,7 +20,7 @@ export default function VideosDisplay(videos : any[]) {
                             </div>
                             <h2 className="text-lg font-medium mb-1">{video.title}</h2>
                             <a className="text-gray-500 text-sm hover:underline hover:font-bold">{video.username}</a>
-                            <p>{video.champion}</p>
+                            <img src={`https://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/${video.champion}.png`} alt={video.champion} className="w-12 h-12 rounded"/>
                             <div className="flex items-center mt-2 space-x-4">
                                 <Heart className={`h-5 w-5 inline-block mr-1 ${video.like > 0 ? "text-red-500" : "text-black"}`} onClick={() =>likeVideo(video.id)}/>
                                 <p>{video.like}</p>
