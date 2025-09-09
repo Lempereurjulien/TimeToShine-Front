@@ -17,7 +17,7 @@ export default function AddVideos() {
         e.preventDefault();
         setIsUploading(true);
         const formData = new FormData(e.currentTarget);
-        const storedUser = localStorage.getItem('user');
+        const storedUser = (localStorage.getItem('user'));
         if (storedUser) {
             formData.append('user_id', JSON.parse(storedUser).id);
         } else {
@@ -25,11 +25,12 @@ export default function AddVideos() {
             return;
         }
         try {
+            console.log(storedUser);
+            
             const response = await fetch(`${API_URL}/videos`, {
                 method: 'POST',
                 body: formData,
-                // headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
-                // Do NOT set Content-Type header, browser will set it with correct boundary
+                headers: { 'Authorization': 'Bearer ' + JSON.parse(storedUser).jwt }
             })
                 .then(res => res.json())
                 .then(data => {
@@ -75,7 +76,7 @@ export default function AddVideos() {
                                     Champion
                                 </label>
                                 <div className="flex relative">
-                                    <button className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 transition" onAbort={() => setOpen(!open)} onClick={() => setOpen(!open)}>
+                                    <button type="button" className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 transition" onAbort={() => setOpen(!open)} onClick={() => setOpen(!open)}>
                                         Sélectionner un champion
                                     </button>
                                     {championSelected && (<div className="flex items-center gap-2 px-4 py-2">
