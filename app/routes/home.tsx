@@ -11,11 +11,11 @@ export function meta({}: Route.MetaArgs) {
 
 
 export default function Home() {
-  const [time,setTime ] = useState<string | null>(null);
+  const [version,setVersion ] = useState<string | null>(null);
 
 
   useEffect(() => {
-    setTime(new Date().toLocaleTimeString());
+    setVersion('1.0.0');
   }, []);
 
 
@@ -50,7 +50,7 @@ export default function Home() {
       </div>
       </div>
       <footer className="absolute bottom-4 w-full text-center text-gray-400 text-xs z-10">
-      © {time} TimeToShine. Inspiré par League of Legends.
+      © Version {version} / TimeToShine. Inspiré par League of Legends.
       </footer>
     </div>
   );
