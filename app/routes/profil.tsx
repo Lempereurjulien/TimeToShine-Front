@@ -4,6 +4,7 @@ import Navbar from "~/components/navbar";
 import AddVideos from "~/components/addVideos";
 import { useEffect } from "react";
 import VideosDisplay from "~/components/videosDisplay";
+import { User, UserCircle } from "heroicons-react";
 const API_URL = import.meta.env.VITE_API_URL;
 
 export default function Profil() {
@@ -15,7 +16,9 @@ export default function Profil() {
         if (storedUser) {
             setUser(JSON.parse(storedUser));
             const userId = JSON.parse(storedUser).id;
-            fetch(`${API_URL}/videos/user/${userId}`)
+            fetch(`${API_URL}/videos/user/${userId}`, {
+                headers: { "Authorization": `Bearer ${JSON.parse(storedUser).jwt}` }
+            })
                 .then((response) => response.json())
                 .then((data) => {
                     setVideosUser(data);
@@ -23,8 +26,8 @@ export default function Profil() {
                 .catch((error) => {
                     console.error("Error fetching user's videos:", error);
                 });
-                console.log(user);
-                
+            console.log(user);
+
 
         }
     }, []);
@@ -41,11 +44,12 @@ export default function Profil() {
             <main className="p-8 mt-24">
                 <div className="flex flex-col items-center mb-12">
                     {/* profil partie*/}
-                    <h1 className="text-3xl m-4 font-semibold mb-6 text-gray-800">Mon Profil</h1>
                     <div className="bg-gradient-to-br from-yellow-900 to-yellow-600 rounded-lg shadow p-6 w-[30%] flex flex-col items-center">
+                    <h1 className="text-3xl m-4 font-semibold mb-6 text-white">Mon Profil</h1>
+                    <UserCircle size={40} className="m-5 h-40 w-40"/>
                         <div className="flex flex-col mb-8 w-[50%]">
                             <div className="mb-4">
-                                <label className="block text-gray-700 font-medium mb-2">Nom d'utilisateur</label>
+                                <label className="block text-white font-medium mb-2">Nom d'utilisateur</label>
                                 <input
                                     type="text"
                                     value={user?.username}
@@ -54,7 +58,7 @@ export default function Profil() {
                                 />
                             </div>
                             <div className="mb-4">
-                                <label className="block text-gray-700 font-medium mb-2">Adresse e-mail</label>
+                                <label className="block text-white font-medium mb-2">Adresse e-mail</label>
                                 <input
                                     type="email"
                                     value={user?.mail}
@@ -69,8 +73,7 @@ export default function Profil() {
                     </div>
                 </div>
                 <div>
-                    <h1 className="text-3xl font-semibold mb-6 text-yellow-800">Mes vidéos</h1>
-                    <VideosDisplay videos={videosUser} profil={true}/>
+                    <VideosDisplay videos={videosUser} profil={true} />
                 </div>
             </main>
             <div className="flex m-4 justify-end" >

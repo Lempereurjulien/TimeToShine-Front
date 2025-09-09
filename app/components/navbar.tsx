@@ -3,6 +3,7 @@ import { UserCircle } from "heroicons-react";
 import { useNavigate } from "react-router";
 export default function Navbar() {
     const [username, setUsername] = useState("");
+    const [loged, setLoged] = useState(false)
     const navigation = useNavigate();
     useEffect(() => {
         const storedUser = localStorage.getItem("user");
@@ -14,10 +15,18 @@ export default function Navbar() {
     return (
         <nav className="h-30 px-6 py-4 flex items-center justify-between w-full absolute top-0 left-0 bg-gradient-to-br from-indigo-900 via-blue-900 to-gray-900 hover:cursor-pointer">
                 <div className="top-0 text-4xl font-extrabold text-[#d8a54d] mb-2 text-center drop-shadow-lg" onClick={() => navigation("/dashboard")}>TimeToShine</div>
+                {username && (
                 <div className="flex items-center space-x-4" onClick={() => navigation("/profil")}>
                     <p className="font-bold text-white">{username}</p>
                     <UserCircle className="h-10 w-10" size={32} />
                 </div>
+                )}
+                {!username && (
+                <div className="flex gap-2">
+                <p className="font-extrabold text-[#d8a54d] mb-2 text-center drop-shadow-lg border-2 p-2 hover:bg-[#d8a54d] hover:text-blue-900 hover:border-[#d8a54d]" onClick={() => navigation("/login")}>Connection</p>
+                <p className="font-extrabold text-[#d8a54d] mb-2 text-center drop-shadow-lg border-2 p-2 hover:bg-[#d8a54d] hover:text-blue-900 hover:border-[#d8a54d]" onClick={() => navigation("/register")}>S'inscrire</p>
+                </div>
+                )}
             </nav>
     )
 }

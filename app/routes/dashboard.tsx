@@ -15,8 +15,6 @@ export default function Dashboard() {
     useEffect(() => {
         const storedUser = localStorage.getItem("user");
         if (storedUser) {
-            console.log(JSON.parse(storedUser));
-
             setUsername(JSON.parse(storedUser).username);
         }
         fetch(`${API_URL}/videos/top`)
@@ -59,7 +57,9 @@ export default function Dashboard() {
                     />
                 </div>
                 )}
+                {username && (
                 <button className="m-6 px-2 py-2 bg-[#785a28] text-white font-semibold rounded-md hover:bg-[#a67c2e] transition" onClick={() => { setVisibleButton(!visibleButton) }}>Add vidéo +</button>
+                )}
                 {visibleButton && (
                     <AddVideos />
                 )}

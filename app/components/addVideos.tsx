@@ -81,7 +81,7 @@ export default function AddVideos() {
                                     </button>
                                     {championSelected && (<div className="flex items-center gap-2 px-4 py-2">
                                         <img
-                                            src={`https://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/${championSelected}.png`}
+                                            src={`https://ddragon.leagueoflegends.com/cdn/15.17.1/img/champion/${championSelected}.png`}
                                             alt={championSelected}
                                             className="w-12 h-12 rounded"
                                         />
@@ -100,7 +100,7 @@ export default function AddVideos() {
                                                     }}
                                                 >
                                                     <img
-                                                        src={`https://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/${champion}.png`}
+                                                        src={`https://ddragon.leagueoflegends.com/cdn/15.17.1/img/champion/${champion}.png`}
                                                         alt={champion}
                                                         className="w-12 h-12 rounded"
                                                     />

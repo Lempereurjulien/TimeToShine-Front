@@ -29,7 +29,7 @@ function ChampionList({ setOpen }: { setOpen: React.Dispatch<React.SetStateActio
                     }}
                 >
                     <img
-                        src={`https://ddragon.leagueoflegends.com/cdn/14.17.1/img/champion/${champion}.png`}
+                        src={`https://ddragon.leagueoflegends.com/cdn/15.17.1/img/champion/${champion}.png`}
                         alt={champion}
                         className="w-12 h-12 rounded"
                     />
