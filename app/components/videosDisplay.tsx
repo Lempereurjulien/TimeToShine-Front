@@ -1,8 +1,9 @@
 import { Heart } from "heroicons-react";
 import { useEffect, useState } from "react";
+import AddVideos from "./addVideos";
 
 
-export default function VideosDisplay(videos : any[]) {
+export default function VideosDisplay(videos : any[], profil?: boolean) {
     const [videosDisplay, setVideosDisplay] = useState([]);
 
     return (
@@ -27,6 +28,9 @@ export default function VideosDisplay(videos : any[]) {
                                 </div>
                         </div>
                     ))}
+                    {videos.profil && (
+                    <AddVideos />
+                    )}
                 </div>
     );
 }
