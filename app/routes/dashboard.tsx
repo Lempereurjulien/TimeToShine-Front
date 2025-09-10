@@ -9,6 +9,7 @@ export default function Dashboard() {
     const [videos, setVideos] = useState<any>([]);
     const [visibleButton, setVisibleButton] = useState(false);
     const [titleKey, setTitleKey] = useState(0);
+     const [reload, setReload] = useState(false);
     const navigation = useNavigate();
 
 
@@ -25,7 +26,7 @@ export default function Dashboard() {
             .catch((error) => {
                 console.error("Error fetching videos:", error);
             });
-    }, [titleKey==0]);
+    }, [titleKey==0,reload]);
 
     const search = (element) => {
         setUsername(element);
@@ -38,6 +39,12 @@ export default function Dashboard() {
                 console.error("Error fetching videos:", error);
             });
     }
+
+    const handleVideoUpload = () =>{
+        console.log("in handle video");
+        
+        setReload(prev => !prev)
+    };
 
     return (
         <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-[#0a1428] to-[#1e283e]">
@@ -58,10 +65,10 @@ export default function Dashboard() {
                 </div>
                 )}
                 {username && (
-                <button className="m-6 px-2 py-2 bg-[#785a28] text-white font-semibold rounded-md hover:bg-[#a67c2e] transition" onClick={() => { setVisibleButton(!visibleButton) }}>Add vidéo +</button>
+                <button className="m-6 px-2 py-2 bg-[#785a28] text-white font-semibold rounded-md hover:bg-[#a67c2e] transition" onClick={() => { setVisibleButton(!visibleButton) }}>Ajouter une vidéo +</button>
                 )}
                 {visibleButton && (
-                    <AddVideos />
+                    <AddVideos onUpload={handleVideoUpload}/>
                 )}
                 <VideosDisplay videos={videos} />
             </main>

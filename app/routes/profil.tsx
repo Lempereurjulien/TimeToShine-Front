@@ -10,7 +10,9 @@ const API_URL = import.meta.env.VITE_API_URL;
 export default function Profil() {
     const navigate = useNavigate();
     const [videosUser, setVideosUser] = useState<any>([]);
-    const [user, setUser] = useState<any>();
+    const [user, setUser] = useState<any>({});
+    const [reload, setReload] = useState(false);
+
     useEffect(() => {
         const storedUser = localStorage.getItem("user");
         if (storedUser) {
@@ -26,11 +28,12 @@ export default function Profil() {
                 .catch((error) => {
                     console.error("Error fetching user's videos:", error);
                 });
-            console.log(user);
-
-
         }
-    }, []);
+    }, [reload]);
+
+    const handleVideoUpload = () => {
+        setReload(prev => !prev)
+    };
 
     const logout = () => {
         localStorage.removeItem("user");
@@ -45,14 +48,14 @@ export default function Profil() {
                 <div className="flex flex-col items-center mb-12">
                     {/* profil partie*/}
                     <div className="bg-gradient-to-br from-yellow-900 to-yellow-600 rounded-lg shadow p-6 w-[30%] flex flex-col items-center">
-                    <h1 className="text-3xl m-4 font-semibold mb-6 text-white">Mon Profil</h1>
-                    <UserCircle size={40} className="m-5 h-40 w-40"/>
+                        <h1 className="text-3xl m-4 font-semibold mb-6 text-white">Mon Profil</h1>
+                        <UserCircle size={40} className="m-5 h-40 w-40" />
                         <div className="flex flex-col mb-8 w-[50%]">
                             <div className="mb-4">
                                 <label className="block text-white font-medium mb-2">Nom d'utilisateur</label>
                                 <input
                                     type="text"
-                                    value={user?.username}
+                                    value={user?.username ?? ""}
                                     className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#d8a54d]"
                                     readOnly
                                 />
@@ -61,7 +64,7 @@ export default function Profil() {
                                 <label className="block text-white font-medium mb-2">Adresse e-mail</label>
                                 <input
                                     type="email"
-                                    value={user?.mail}
+                                    value={user?.mail ?? ""}
                                     className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#d8a54d]"
                                     readOnly
                                 />
@@ -73,12 +76,12 @@ export default function Profil() {
                     </div>
                 </div>
                 <div>
-                    <VideosDisplay videos={videosUser} profil={true} />
+                    <VideosDisplay videos={videosUser} profil={true} onVideoAdded={handleVideoUpload} />
                 </div>
             </main>
             <div className="flex m-4 justify-end" >
                 <button className="bottom-4 right-4 p-4 rounded-full bg-gradient-to-r from-[#c89b3c] to-[#785a28] text-white shadow-lg hover:from-[#f0e6d2] hover:to-[#c89b3c] transition" onClick={() => logout()}>
-                    logout
+                    Déconnexion
                 </button>
             </div>
         </div>

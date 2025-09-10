@@ -4,51 +4,57 @@ import { champions } from "../asset/champion";
 import Message from "./message";
 const API_URL = import.meta.env.VITE_API_URL;
 
-export default function AddVideos() {
+export default function AddVideos({ onUpload }) {
     const [open, setOpen] = useState(false);
     const [championSelected, setChampionSelected] = useState<string>("");
     const [openMessage, setOpenMessage] = useState(false);
     const [message, setMessage] = useState("");
     const [isUploading, setIsUploading] = useState(false);
+
     useEffect(() => {
         // Simulate fetching data from an API or local asset        
     }, []);
+
+
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setIsUploading(true);
+
         const formData = new FormData(e.currentTarget);
-        const storedUser = (localStorage.getItem('user'));
-        if (storedUser) {
-            formData.append('user_id', JSON.parse(storedUser).id);
-        } else {
-            console.error('Utilisateur non connecté');
+        const storedUser = localStorage.getItem("user");
+
+        if (!storedUser) {
+            console.error("Utilisateur non connecté");
             return;
         }
-        try {
-            console.log(storedUser);
-            
-            const response = await fetch(`${API_URL}/videos`, {
-                method: 'POST',
-                body: formData,
-                headers: { 'Authorization': 'Bearer ' + JSON.parse(storedUser).jwt }
-            })
-                .then(res => res.json())
-                .then(data => {
-                    setIsUploading(false);
-                    if (!data.error) {
-                        setMessage(data.message);
-                        setOpenMessage(true);
-                        setTimeout(() => {
-                            setOpenMessage(false);
-                        }, 3000);
-                    }
-                }
-                );
-            setChampionSelected("");
 
-        }
-        catch (error) {
-            console.error('Erreur réseau', error);
+        formData.append("user_id", JSON.parse(storedUser).id);
+
+        try {
+            const res = await fetch(`${API_URL}/videos`, {
+                method: "POST",
+                body: formData,
+                headers: { Authorization: "Bearer " + JSON.parse(storedUser).jwt },
+            });
+
+            const data = await res.json();
+            setIsUploading(false);
+
+            if (!data.error) {
+                setMessage(data.message);
+                setOpenMessage(true);
+                setTimeout(() => setOpenMessage(false), 3000);
+
+                setChampionSelected("");
+
+                // ✅ Appelle la callback SEULEMENT si upload OK
+                if (onUpload) onUpload();
+            } else {
+                console.error("Erreur API:", data.error);
+            }
+        } catch (error) {
+            console.error("Erreur réseau", error);
+            setIsUploading(false);
         }
     };
 
